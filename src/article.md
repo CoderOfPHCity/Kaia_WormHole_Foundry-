@@ -392,7 +392,7 @@ Get the relayer address from [wormhole documentation](https://wormhole.com/docs/
 Configure your environment variables and run the command to get your cross chain kaiaToken Contract deployed on kaia mainnet.
 
 ```
-forge script --chain kaia script/DeployCrossChain.s.sol:DeployCrossChain --rpc-url $RPC_URL --broadcast --verify -vvvv
+forge create src/KaiaToken.sol:KaiaToken --rpc-url https://kaia.blockpi.network/v1/rpc/public --SIGNER --constructor-args 0x27428DD2d3DD32A4D7f7C497eAaa23130d894911 0x0b2402144Bb366A632D14B83F244D2e0e21bD39c 0xa5f208e072434bC67592E4C49C1B991BA79BCA46 --gas-limit 8000000 
 ```
 While this article focuses on Wormhole on the Kaia blockchain, many protocols have a similar structure, with notable differences. 
 
