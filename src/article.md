@@ -85,7 +85,7 @@ Before getting started, it is important to note that we use Wormhole's TokenBrid
 
 So, in order to send a token using the method in this example, the token must be attested onto the Token Bridge contract that lives on our desired target blockchain.
 
-To ease development, we'll make use of the[ Wormhole Solidity SDK](https://github.com/wormhole-foundation/wormhole-sdk-ts/tree/f67b5692518c35127b1ed0c4ffd8f2deac7d2d87).
+To ease development, we'll make use of the[ Wormhole Solidity SDK](https://wormhole-foundation.github.io/wormhole-sdk-ts/).
 ![kaiwormhole](https://hackmd.io/_uploads/SJ0X_Zymkg.png)
 
 
