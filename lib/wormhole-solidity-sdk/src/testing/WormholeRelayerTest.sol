@@ -194,6 +194,38 @@ abstract contract WormholeRelayerTest is Test {
         mockOffchainRelayer.relay(logs);
     }
 
+     function createAndAttestToken(
+        uint16 homeChain
+    ) public returns (ERC20Mock token) {
+        uint256 originalFork = vm.activeFork();
+        ActiveFork memory home = activeForks[homeChain];
+        vm.selectFork(home.fork);
+
+        token = new ERC20Mock("Test Token", "TST");
+        token.mint(address(this), 5000e18);
+
+        vm.recordLogs();
+        home.tokenBridge.attestToken(address(token), 0);
+        Vm.Log memory log = home.guardian.fetchWormholeMessageFromLog(
+            vm.getRecordedLogs()
+        )[0];
+        bytes memory attestation = home.guardian.fetchSignedMessageFromLogs(
+            log,
+            home.chainId
+        );
+
+        for (uint256 i = 0; i < activeForksList.length; ++i) {
+            if (activeForksList[i] == home.chainId) {
+                continue;
+            }
+            ActiveFork memory fork = activeForks[activeForksList[i]];
+            vm.selectFork(fork.fork);
+            fork.tokenBridge.createWrapped(attestation);
+        }
+
+        vm.selectFork(originalFork);
+    }
+
     
 
     function mintUSDC(uint16 chain, address addr, uint256 amount) public {

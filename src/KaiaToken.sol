@@ -11,13 +11,19 @@ contract KaiaToken is TokenSender, TokenReceiver {
         TokenBase(_wormholeRelayer, _tokenBridge, _wormhole)
     {}
 
-    function quoteCrossChainDeposit(uint16 targetChain) public view returns (uint256 cost) {
-        // Cost of delivering token and payload to targetChain
-        uint256 deliveryCost;
-        (deliveryCost,) = wormholeRelayer.quoteEVMDeliveryPrice(targetChain, 0, GAS_LIMIT);
+    // function quoteCrossChainDeposit(uint16 targetChain) public view returns (uint256 cost) {
+    //     // Cost of delivering token and payload to targetChain
+    //     uint256 deliveryCost;
+    //     (deliveryCost,) = wormholeRelayer.quoteEVMDeliveryPrice(targetChain, 0, GAS_LIMIT);
 
-        // Total cost: delivery cost + cost of publishing the 'sending token' wormhole message
-        cost = deliveryCost + wormhole.messageFee();
+    //     // Total cost: delivery cost + cost of publishing the 'sending token' wormhole message
+    //     cost = deliveryCost + wormhole.messageFee();
+    // }
+
+    function quoteCrossChainDeposit(uint16 targetChain) public view returns (uint256 cost) {
+        uint256 deliveryCost;
+        (deliveryCost,) = wormholeRelayer.quoteEVMDeliveryPrice(targetChain, 0, 2500_000);
+        cost = deliveryCost;
     }
 
     function sendCrossChainDeposit(
@@ -28,7 +34,7 @@ contract KaiaToken is TokenSender, TokenReceiver {
         address token
     ) public payable {
         uint256 cost = quoteCrossChainDeposit(targetChain);
-        require(msg.value == cost, "msg.value must be quoteCrossChainDeposit(targetChain)");
+        require(msg.value >= cost, "msg.value must be quoteCrossChainDeposit(targetChain)");
 
         IERC20(token).transferFrom(msg.sender, address(this), amount);
 
@@ -38,7 +44,7 @@ contract KaiaToken is TokenSender, TokenReceiver {
             targetHelloToken, // address (on targetChain) to send token and payload to
             payload,
             0, // receiver value
-            GAS_LIMIT,
+            2500_000,
             token, // address of IERC20 token contract
             amount
         );

@@ -8,39 +8,40 @@ import "wormhole-solidity-sdk/testing/WormholeRelayerTest.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 
-contract HelloTokenTest is WormholeRelayerBasicTest {
-    KaiaToken public helloSource;
-    KaiaToken public helloTarget;
+contract KaiaTokenTest is WormholeRelayerBasicTest {
+    KaiaToken public kaiaSource;
+    KaiaToken public kaiaTarget;
 
     ERC20Mock public token;
 
     function setUpSource() public override {
-        helloSource = new KaiaToken(
+        kaiaSource = new KaiaToken(
             address(relayerSource), address(tokenBridgeSource), address(wormholeSource)
         );
 
-        //   token = createAndAttestToken(sourceChain);
+        token = createAndAttestToken(sourceChain);
     }
 
     function setUpTarget() public override {
-        helloTarget = new KaiaToken(
+        kaiaTarget = new KaiaToken(
             address(relayerTarget), address(tokenBridgeTarget), address(wormholeTarget)
         );
     }
 
     function testRemoteDeposit() public {
         uint256 amount = 19e17;
-        token.approve(address(helloSource), amount);
+        token.approve(address(kaiaSource), amount);
 
         vm.selectFork(targetFork);
         address recipient = 0x1234567890123456789012345678901234567890;
+        vm.deal(recipient, 1 ether);
 
         vm.selectFork(sourceFork);
-        uint256 cost = helloSource.quoteCrossChainDeposit(targetChain);
+        uint256 cost = kaiaSource.quoteCrossChainDeposit(targetChain);
 
         vm.recordLogs();
-        helloSource.sendCrossChainDeposit{value: cost}(
-            targetChain, address(helloTarget), recipient, amount, address(token)
+        kaiaSource.sendCrossChainDeposit{value: cost}(
+            targetChain, address(kaiaTarget), recipient, amount, address(token)
         );
         performDelivery();
 
