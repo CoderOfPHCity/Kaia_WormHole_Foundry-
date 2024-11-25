@@ -3,6 +3,9 @@ A simple cross-chain token transfer application built with Wormhole Protocol.
 
 This contract enables users to send ERC20 tokens between kaia chain, kairos testnet or ethereum.
 
+This project comes prepacked with a detailed article guide with link below:
+https://github.com/CoderOfPHCity/Kaia_WormHole_Foundry-/blob/master/src/article.md
+
 ## Features
 1. Cross-chain ERC20 token transfers
 2. Automated token bridging via Wormhole
