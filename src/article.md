@@ -386,7 +386,7 @@ contract Deployscript is Script {
 }
 
 ```
-Get the relayer address from [wormhole documentation](https://wormhole.com/docs/build/start-building/supported-networks/evm/#klaytn) . Enter the relayer address for the connected chain as a constructor argument in the deploy input field.
+Enter the relayer, core and tokenbridge addresses for the connected chain as a constructor argument in the deploy input field.
 
 Configure your forge cast and run the command to get your cross chain kaiaToken Contract deployed on kaia mainnet.
 
