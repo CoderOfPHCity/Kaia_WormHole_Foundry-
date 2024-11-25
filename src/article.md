@@ -165,7 +165,7 @@ Next, let's add a function that estimates the cost of sending tokens across chai
         (deliveryCost, ) = wormholeRelayer.quoteEVMDeliveryPrice(
             targetChain,
             0,
-            GAS_LIMIT
+            2500_000
         );
 
         cost = deliveryCost + wormhole.messageFee();
@@ -183,7 +183,7 @@ Finally, we'll add the function that sends the tokens across chains:
     ) public payable {
         uint256 cost = quoteCrossChainDeposit(targetChain);
         require(
-            msg.value == cost,
+            msg.value >= cost,
             "msg.value must equal quoteCrossChainDeposit(targetChain)"
         );
 
@@ -196,7 +196,7 @@ Finally, we'll add the function that sends the tokens across chains:
             targetReceiver,
             payload,
             0,
-            GAS_LIMIT,
+            2500_000,
             token,
             amount
         );
@@ -398,4 +398,4 @@ While this article focuses on Wormhole on the Kaia blockchain, many protocols ha
 
 To assist you in navigating them, here is a link to a GitHub repository where you can walkthrough the contracts using various cross-chain messaging protocols:
 
-GitHub: https://github.com/CoderOfPHCity/Kaia_Wormhole_Foundry
+GitHub: https://github.com/CoderOfPHCity/Kaia_WormHole_Foundry-
