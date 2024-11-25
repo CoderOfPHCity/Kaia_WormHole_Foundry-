@@ -300,51 +300,50 @@ import "wormhole-solidity-sdk/testing/WormholeRelayerTest.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 
-contract HelloTokenTest is WormholeRelayerBasicTest {
-    KaiaToken public helloSource;
-    KaiaToken public helloTarget;
+contract KaiaTokenTest is WormholeRelayerBasicTest {
+    KaiaToken public kaiaSource;
+    KaiaToken public kaiaTarget;
 
     ERC20Mock public token;
 
     function setUpSource() public override {
-        helloSource = new KaiaToken(
-            address(relayerSource),
-            address(tokenBridgeSource),
-            address(wormholeSource)
+        kaiaSource = new KaiaToken(
+            address(relayerSource), address(tokenBridgeSource), address(wormholeSource)
         );
 
         token = createAndAttestToken(sourceChain);
     }
 
     function setUpTarget() public override {
-        helloTarget = new KaiaToken(
-            address(relayerTarget),
-            address(tokenBridgeTarget),
-            address(wormholeTarget)
+        kaiaTarget = new KaiaToken(
+            address(relayerTarget), address(tokenBridgeTarget), address(wormholeTarget)
         );
     }
 
     function testRemoteDeposit() public {
         uint256 amount = 19e17;
-        token.approve(address(helloSource), amount);
+        token.approve(address(kaiaSource), amount);
 
         vm.selectFork(targetFork);
         address recipient = 0x1234567890123456789012345678901234567890;
+        vm.deal(recipient, 1 ether);
 
         vm.selectFork(sourceFork);
-        uint256 cost = helloSource.quoteCrossChainDeposit(targetChain);
+        uint256 cost = kaiaSource.quoteCrossChainDeposit(targetChain);
 
         vm.recordLogs();
-        helloSource.sendCrossChainDeposit{value: cost}(
-            targetChain, address(helloTarget), recipient, amount, address(token)
+        kaiaSource.sendCrossChainDeposit{value: cost}(
+            targetChain, address(kaiaTarget), recipient, amount, address(token)
         );
         performDelivery();
 
         vm.selectFork(targetFork);
-        address wormholeWrappedToken = tokenBridgeTarget.wrappedAsset(sourceChain, toWormholeFormat(address(token)));
+        address wormholeWrappedToken =
+            tokenBridgeTarget.wrappedAsset(sourceChain, toWormholeFormat(address(token)));
         assertEq(IERC20(wormholeWrappedToken).balanceOf(recipient), amount);
     }
 }
+
 ```
 Configure your test files to use wormhole inbuilt cross chain test suit and run the following command 
 ```
@@ -355,37 +354,38 @@ forge test
 Your Cross chain Foundry test stack trace should look like this above
 
 ## Compile & deploy
-Let’s compile the above contract on remix IDE and deploy it on two Kaia mainnet and kairos testnet.
+Let’s compile the above contract on Foundry, you can also use Remix IDE and deploy it on two Kaia mainnet, Ethereum or kairos testnet. For this tutorial i deployed on kaia mainnet.
 
-For this part i created a deployment script using foundry here;
+For this part, i created a deployment script using foundry here;
 ```
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
-import "./src/HelloToken.sol";
+import "./KaiaToken.sol";
 
-contract DeployHelloToken is Script {
-    HelloToken public helloToken;
-    
+contract Deployscript is Script {
+    KaiaToken public helloToken;
+
+    address deployer = 0x4506fDD110Ae6e5b5401d5A6380D3EB141e98d9f;
+
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        address deployer = vm.addr(deployerPrivateKey);
-        
-        vm.startBroadcast(deployerPrivateKey);
-        
+        vm.startBroadcast(deployer);
+
         // constructor(address _wormholeRelayer, address _tokenBridge, address _wormhole)
-        helloToken = new HelloToken(
+        helloToken = new KaiaToken(
             0x27428DD2d3DD32A4D7f7C497eAaa23130d894911, // WormholeRelayer address
-           0x5b08ac39EAED75c0439FC750d9FE7E1F9dD0193F, // TokenBridge address
-           0x0C21603c4f3a6387e241c0091A7EA39E43E90bb7  // Wormhole address
+            0x0b2402144Bb366A632D14B83F244D2e0e21bD39c, // TokenBridge address
+            0xa5f208e072434bC67592E4C49C1B991BA79BCA46 // Wormhole address
         );
-        
-        console.log("HelloToken deployed at:", address(helloToken));
-        
+
+        console.log("KaiaToken deployed at:", address(helloToken));
+        console.log(" deployer Address at:", deployer);
+
         vm.stopBroadcast();
     }
 }
+
 ```
 Get the relayer address from [wormhole documentation](https://wormhole.com/docs/build/start-building/supported-networks/evm/#klaytn) . Enter the relayer address for the connected chain as a constructor argument in the deploy input field.
 
