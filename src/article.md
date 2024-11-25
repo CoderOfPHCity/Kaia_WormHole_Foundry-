@@ -147,10 +147,10 @@ TokenBase is an abstract contract from the Wormhole Solidity SDK that provides t
 The empty implementation {} indicates that this constructor doesn't perform any additional initialization beyond what's handled by the TokenBase constructor.
 
 ### Gas Limit Constant:
-`uint256 constant GAS_LIMIT = 200_000;`
+`uint256 constant GAS_LIMIT = 2500_000;`
 We define a constant GAS_LIMIT for executing cross-chain transactions.
 
-Here, we set it to 200,000, but this value can be adjusted based on the complexity of the operation you are relaying across chains.
+Here, we set it to 2500_000, but this value can be adjusted based on the complexity of the operation you are relaying across chains.
 
 ## Token Sender Function
 The KaiaToken contract calculates the cost of sending tokens across chains and then facilitates the actual token transfer.
