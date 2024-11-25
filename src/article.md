@@ -389,7 +389,7 @@ contract DeployHelloToken is Script {
 ```
 Get the relayer address from [wormhole documentation](https://wormhole.com/docs/build/start-building/supported-networks/evm/#klaytn) . Enter the relayer address for the connected chain as a constructor argument in the deploy input field.
 
-Configure your environment variables and run the command to get your cross chain kaiaToken Contract deployed on kaia mainnet.
+Configure your forge cast and run the command to get your cross chain kaiaToken Contract deployed on kaia mainnet.
 
 ```
 forge create src/KaiaToken.sol:KaiaToken --rpc-url https://kaia.blockpi.network/v1/rpc/public --SIGNER --constructor-args 0x27428DD2d3DD32A4D7f7C497eAaa23130d894911 0x0b2402144Bb366A632D14B83F244D2e0e21bD39c 0xa5f208e072434bC67592E4C49C1B991BA79BCA46 --gas-limit 8000000 
