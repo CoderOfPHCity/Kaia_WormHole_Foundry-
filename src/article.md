@@ -201,7 +201,6 @@ Finally, we'll add the function that sends the tokens across chains:
             amount
         );
     }
-}
 This `sendCrossChainDeposit` function is where the actual token transfer happens. It sends the tokens to the recipient on the target chain using the Wormhole protocol.
 
 Here’s a breakdown of what happens in each step of the `sendCrossChainDeposit` function:
