@@ -11,19 +11,10 @@ contract KaiaToken is TokenSender, TokenReceiver {
         TokenBase(_wormholeRelayer, _tokenBridge, _wormhole)
     {}
 
-    // function quoteCrossChainDeposit(uint16 targetChain) public view returns (uint256 cost) {
-    //     // Cost of delivering token and payload to targetChain
-    //     uint256 deliveryCost;
-    //     (deliveryCost,) = wormholeRelayer.quoteEVMDeliveryPrice(targetChain, 0, GAS_LIMIT);
-
-    //     // Total cost: delivery cost + cost of publishing the 'sending token' wormhole message
-    //     cost = deliveryCost + wormhole.messageFee();
-    // }
-
     function quoteCrossChainDeposit(uint16 targetChain) public view returns (uint256 cost) {
         uint256 deliveryCost;
         (deliveryCost,) = wormholeRelayer.quoteEVMDeliveryPrice(targetChain, 0, 2500_000);
-        cost = deliveryCost;
+        cost = deliveryCost + wormhole.messageFee();
     }
 
     function sendCrossChainDeposit(
