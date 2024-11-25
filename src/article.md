@@ -85,7 +85,7 @@ Before getting started, it is important to note that we use Wormhole's TokenBrid
 
 So, in order to send a token using the method in this example, the token must be attested onto the Token Bridge contract that lives on our desired target blockchain.
 
-To ease development, we'll make use of the[ Wormhole Solidity SDK](https://wormhole-foundation.github.io/wormhole-sdk-ts/). Then head to supported chain in [Wormhole Docs](https://wormhole.com/docs/build/start-building/supported-networks/evm/#klaytn) and get the Relayer, Tokenbridge and wormhole core  contract addresses of kaia mainnet.
+To ease development, we'll make use of the[ Wormhole Solidity SDK](https://wormhole-foundation.github.io/wormhole-sdk-ts/). Then head to EVM supported chains in [Wormhole Docs](https://wormhole.com/docs/build/start-building/supported-networks/evm/#klaytn) and get the Relayer, Tokenbridge and wormhole core  contract addresses of kaia mainnet.
 ![kaiwormhole](https://hackmd.io/_uploads/SJ0X_Zymkg.png)
 
 
